@@ -88,7 +88,7 @@ function loadMap(){
     {
         for (let c=0;c<columnCount; c++)
         {
-            const row =tilemap[r];
+            const row =tileMap[r];
             const tileMapChar = row[c];
 
             const x= c*tileSize;
@@ -129,12 +129,24 @@ function loadMap(){
 function update(){
     draw();
     setTimeout(update, 50);
+
 }
 
 function draw(){
     context.drawImage(pacman.image , pacman.x,pacman.y,pacman.width,pacman.height);
-    for (let ghost of ghosts.values()) {
+    for (let ghost of ghosts.values()) 
+    {
         context.drawImage(ghost.image, ghost.x, ghost.y, ghost.width, ghost.height);
+    }
+    for (let wall of walls.values()) 
+    {
+        context.drawImage(wall.image, wall.x, wall.y, wall.width, wall.height);
+    }
+
+    context.fillStyle = "white";
+    for (let food of foods.values()) 
+    {
+        context.fillRect(food.x, food.y, food.width, food.height);
     }
 }
 
@@ -147,6 +159,34 @@ class Block{
         this.height=height;
 
         this.startX=x;
-        this.statY=y;
+        this.startY=y;
+
+        this.direction = 'R';
+        this.velocityX=0;
+        this.velocityY=0;
+    }
+    updateDirection(direction)
+    {
+        this.direction=direction;
+        this.updateVelocity();
+    }
+    
+    updateVelocity() {
+        if (this.direction == 'U') {
+            this.velocityX = 0;
+            this.velocityY = -tileSize/4;
+        }
+        else if (this.direction == 'D') {
+            this.velocityX = 0;
+            this.velocityY = tileSize/4;
+        }
+        else if (this.direction == 'L') {
+            this.velocityX = -tileSize/4;
+            this.velocityY = 0;
+        }
+        else if (this.direction == 'R') {
+            this.velocityX = tileSize/4;
+            this.velocityY = 0;
+        }
     }
 }
