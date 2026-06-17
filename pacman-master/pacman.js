@@ -40,7 +40,7 @@ const tileMap = [
     "XXXXXXXXXXXXXXXXXXX" 
 ];
 
-const = new Set();
+const walls= new Set();
 const foods = new Set();
 const ghosts = new Set();
 let pacman;
@@ -53,6 +53,7 @@ window.onload = function() {
 
     loadImages();
     loadMap();
+    update();
 }
 
 function loadImages() {
@@ -125,7 +126,17 @@ function loadMap(){
     }
 }
 
+function update(){
+    draw();
+    setTimeout(update, 50);
+}
 
+function draw(){
+    context.drawImage(pacman.image , pacman.x,pacman.y,pacman.width,pacman.height);
+    for (let ghost of ghosts.values()) {
+        context.drawImage(ghost.image, ghost.x, ghost.y, ghost.width, ghost.height);
+    }
+}
 
 class Block{
     constructor(image,x,y,width, height){
